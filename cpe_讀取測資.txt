@@ -1,0 +1,50 @@
+1
+#count times
+def main():
+  
+  count=int(input())
+ 
+   for i in range(count):
+  
+      readinp()
+
+
+2
+def input():
+ 
+sinput = sys.stdin.readline()    
+
+while sinput!= "0 0":
+     
+   rawNumber_int=[0]*2
+    
+    sinput =sinput .split()  
+        carryCount(sinput[0],sinput[1])
+
+ sinput = sys.stdin.readline()  
+3
+input():
+
+import sys
+input1_str=sys.stdin.readline() #讀入輸入
+input1_list=input1_str.split()
+print(type(input1_list))
+print(input1_list)
+
+while input()!='':
+	do_thing
+
+import sys
+for i in range(input()):
+ inpul1_str=sys.stdin.readline()
+ input1_list=inpu1_str.split()
+ ans()
+
+def:ans
+
+01 m= 10508 t = 0.003
+
+經典電腦題，透過這個問題分析互除法，任何未知數
+以下為互除法步驟
+
+猜測互除法臨界點為一百萬(實際上更多)
