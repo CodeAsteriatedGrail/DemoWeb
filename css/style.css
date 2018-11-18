@@ -1,0 +1,50 @@
+*{
+	margin:0;
+	padding:;
+}
+
+.pglink {
+	display:grid;
+	grid-template-columns: 200px 200px 200px 1fr 1fr 1fr;
+	background-color:black;
+	height:40px;
+	padding:10px;
+	color:white;
+	background-color:#666666;
+	font-size:30px;
+	font-family:微軟正黑體;
+}
+.otli {
+	color:#A9A9A9;
+	font-family:sans-serif;
+}
+
+.par1{
+	display:grid;
+	grid-template-columns:1fr 1fr 1fr;
+	padding:10px 60px ;
+	font-family:sans-serif;
+	height:300px;
+}
+.word{
+	grid-column-start: 1;
+	grid-column-end:span 3;
+	font-size:40px;
+	
+}
+.word button{
+	padding:5px;
+	color:white;
+	background-color:#00BFFF;	　
+	size:40px;
+}
+.coloum button{
+	color:white;
+	background-color:#A9A9A9;
+}
+.foot{
+	
+	height:60;
+	padding:60px;
+	color:#A9A9A9;
+}
