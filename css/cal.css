@@ -24,8 +24,23 @@
 	height : 150px;
 	width : 750px;	
 }
-.srce >p{
-	font-size:30px;
+#demo{	
+	font-size:60px;
+}
+.opesr{		
+	position:absolute;
+	left:250px;
+	display:grid;	
+	grid-template-columns: 50px 50px ;
+	grid-gap: 5px;
+	
+	background-color:lightgreen;
+}
+.opesr>p{
+	/*visibility:hidden;*/
+	padding:10px;
+	background-color:green;
+	font-size:30;
 }
 .btn{
 	height: 300px;

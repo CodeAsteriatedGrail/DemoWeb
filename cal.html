@@ -10,7 +10,16 @@
 	<body>
 		
 		<div class="bg">
-		<div class="srce"><p id="demo"></p></div>
+		<div class="srce">
+			<div class="opesr">
+			<p id="add">+</p>
+			<p id="sub">-</p>
+			<p id="mult">x</p>
+			<p id="mod">/</p>
+			</div>
+			<p id="de"></p>
+			<p id="demo">這次數字</p>
+		</div>
 		<div class="btn">
 			<div class="num">
 				<button onclick="myFunction(1)">1</button>
@@ -25,12 +34,12 @@
 				
 			</div>
 			<div class="num1">
-				<button>+</button>
-				<button>-</button>
-				<button>/</button>
-				<button>x</button>
-				<button>=</button>
-				<button>0</button>
+				<button onclick="oper(1)">+</button>
+				<button onclick="oper(2)">-</button>
+				<button onclick="oper(3)">x</button>
+				<button onclick="oper(4)">/</button>
+				<button onclick="oper(5)">AC</button>
+				<button>無</button>
 				
 				
 			</div>
