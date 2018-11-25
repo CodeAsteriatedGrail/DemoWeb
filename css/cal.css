@@ -1,12 +1,9 @@
 *{
-	margin:;
-	padding:;
 	display:flex;
 	flex-direction: column;
 	justify-content:center;
 	align-items:center;
-	
-}
+	}
 
 .bg {	
 	background-color:#bebebe;
@@ -16,42 +13,47 @@
 	padding:20px;
 	
 }
-.srce{
+.srce{	
 	
+	flex-direction:row;
+	justify-content:space-between;
 	background-color:#ffffff;
 	border: 5px solid #bebebe ;
 	color:#9d9d9d;
 	height : 150px;
 	width : 750px;	
-}
-#demo{	
-	font-size:60px;
+	font-size:70px;
+	}
+#demo{
+	background-color:lightgreen;
+	width:300px;
 }
 .opesr{		
-	position:absolute;
-	left:250px;
 	display:grid;	
 	grid-template-columns: 50px 50px ;
 	grid-gap: 5px;
-	
+	height : 150px;
 	background-color:lightgreen;
 }
 .opesr>p{
+	/*Bug-2 強制縮小間距*/
+	margin:5px;
 	/*visibility:hidden;*/
 	padding:10px;
 	background-color:green;
-	font-size:30;
+	font-size:30px;
 }
 .btn{
 	height: 300px;
     width:750px;
     background-color: powderblue;
 	align-items:center;
-  
+	flex-direction:row;
+	
 }
 .num{
-	position:absolute;
-	left:250px;
+	/*position:absolute;
+	left:250px;*/
 	background-color:red;
 	height: 250px;
     width:396px;
@@ -60,8 +62,8 @@
 	
 }
 .num1{
-	position:absolute;
-	right:300px;
+	/*position:absolute;	
+	right:300px;*/
 	background-color:blue;
 	height: 250px;
     width:240px;
