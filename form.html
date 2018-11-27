@@ -6,22 +6,38 @@
 		<script src="js/form.js"></script>
 	</style>
 	</head>
+	
 	<h1>標題</h1>
 	<h2>說明</h2>
 	<body>
 		<form id="simp">
 			<div>
-				<label for="que-1">que-1</label>
-				<input type="text" name="que-1" id="que-1">
+				<label for="que-1">當程式設計師理由?*</label>
+				<input type="text" name="que-1" placeholder="love coding" id="que-1">
 			</div>
 			<div>
-				<label for="que-2">que-2</label>
-				<textarea name="que-2" id="que-2" rows="5" cols="30"></textarea>
+				<label for="que-2">請問在哪高就?</label>
+				<textarea name="que-2" id="que-2" placeholder="unemployed" rows="5" cols="30"></textarea>
+			</div>				
+			<div>
+				<label for="que-3">想當程式設計師嗎?*</label>	
 			</div>
+				<div class="que-3">									
+					<input type="radio" id="yes" name="yn" checked>
+					<label for="male">Yes</label>			 
+					<input type="radio" id="no" name="yn">
+					<label for="female">No</label>			 
+					
+				</div>
+			
+				<!--
 			<div id = "submit">
-			<input type="submit" value="send now">
-			</div>
+			<input type="submit" value="send now" >
+			</div>-->
 		</form>
+		<button onclick="myFunction()">提交</button>
+		<p id="demo"></p>
+
 	</body>
 	
 </html>

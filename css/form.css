@@ -1,40 +1,56 @@
-h1{
-	width:900px;
-	heigh:150px;
-
+bodt{
+	
 }
-
-#simp{
+*{
+	padding:10px;
+	
+}
+h1,h2{
+	text-align:center;
+	width:600px;
+	height:60px;
+	font-size:26px;
+	color:#444444;
+}
+#simp{	
 	background-color:#ccc;
-	width:950px;
+	width:650px;
 }
 form>div{
 	display:flex;
 	flex-direction:column;
 	align-items:center;
+	font-size:24px;
+	color:#444444;
 }
 label {
-	/*float:left;
-	*/
 	background-color:red;
 	text-align:left;
-	width:900px;
-	height:120px;
-	font-size:30px;
-	padding-right:12px;
+	width:600px;
+	height:40px;		
 	margin-top:12px;
 	
 }
 
 input,textarea{
 	margin-top:12px;
-	width:80%;
-	
+	width:600px;	
+}
+input{
+	height:40px;
 }
 
-
-
-#submit{
-	margin-left:150px;
-	padding:15px;
+.que-3{
+	display:grid;
+	grid-template-columns:150px 150px 150px 150px;
+}
+.que-3 >input[type="radio"] +label{
+	
+	width:100px;
+	background-color: yellow;
+	cursor: pointer;
+	
+}
+input,textarea:focus{
+	background-color:lightyellow;
 }
