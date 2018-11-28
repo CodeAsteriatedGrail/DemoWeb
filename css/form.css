@@ -1,22 +1,21 @@
-bodt{
-	
-}
-*{
-	padding:10px;
-	
-}
-h1,h2{
-	text-align:center;
-	width:600px;
-	height:60px;
-	font-size:26px;
-	color:#444444;
-}
+
 #simp{	
+	margin: 0 auto;
+	padding:5px;
 	background-color:#ccc;
 	width:650px;
 }
+h1,h2{
+	text-align:center;
+	width:600px;	
+	font-size:26px;
+	color:#444444;
+}
+
 form>div{
+	padding:10px;
+	border: 2px solid yellow;
+	margin:10px;
 	display:flex;
 	flex-direction:column;
 	align-items:center;
@@ -24,7 +23,7 @@ form>div{
 	color:#444444;
 }
 label {
-	background-color:red;
+	background-color:lightgreen;
 	text-align:left;
 	width:600px;
 	height:40px;		
@@ -33,6 +32,7 @@ label {
 }
 
 input,textarea{
+	background-color:white;
 	margin-top:12px;
 	width:600px;	
 }
@@ -40,17 +40,18 @@ input{
 	height:40px;
 }
 
-.que-3{
-	display:grid;
-	grid-template-columns:150px 150px 150px 150px;
-}
-.que-3 >input[type="radio"] +label{
-	
-	width:100px;
+div:nth-last-child(2){
+	flex-direction:row;
+	}
+.que-3 >input[type="radio"] ,label{
+	height:30px;	
 	background-color: yellow;
 	cursor: pointer;
 	
 }
-input,textarea:focus{
+input, textarea:focus{
 	background-color:lightyellow;
+}
+button{
+	margin:0 auto;
 }
