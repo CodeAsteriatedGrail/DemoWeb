@@ -4,65 +4,81 @@
 	<head>
 		<meta charset="utf-8">
 		<title>離散數學</title>
+<!-- script ---------------------------------------------------------------------------->
+<!-- script -->
 		<script>
+	<!-- var ----------------------------------------------------->
 		<!-- circle_center(circle_x,circe_y) ridus=cirr-->
 		var circe_x = 80;<!--circle center ->
 		var circe_y = 70;<!--circle center ->
 		var cirr = 25;<!--circle r ->
+		
+		<!--fun ARROW -->
+			function arr(x,y,ro){
+					var c = document.getElementById("btnca");
+					var car = c.getContext("2d");
+					var arlen = 15;
+					var ang =6;
+					car.save();
+					car.translate(x,y);
+					car.rotate(Math.PI/30*ro);
+					<!-- code------------------------- -->
+					car.beginPath();
+					car.moveTo(-arlen,-ang);
+					car.lineTo(0,0);
+					car.lineTo(-ang,-arlen);
+					
+					car.stroke();
+					car.restore();
+					}
 		<!--relation ARB-->
 		function line(){
-			var c = document.getElementById("btnca");
-			var ctx = c.getContext("2d");
-			<!--value =12,1R2.-->
-			var rlen= Math.abs(this.value%10-parseInt(this.value/10));
-			var cir1=parseInt(this.value/10)*circe_x;
-			var cir2=this.value%10*circe_x;
+			this.innerHTML=1;
+			<!-- var --->
+				var c = document.getElementById("btnca");
+				var ctx = c.getContext("2d");
+				<!--value =12(aRb)-->
+				var arb_a=parseInt(this.value/10);
+				var arb_b=this.value%10;			
+				var rlen= Math.abs(arb_a-arb_b);//1R2 > 2-1
+				var cir1=arb_a*circe_x;
+				var cir2=arb_b*circe_x;
+			<!-- code --->
 			switch(rlen){
-				case 0:
-					console.log("It is so difficult,too.")
-					console.log(0);
+				case 0:	
+					<!-- line -->
 					ctx.beginPath();
 					ctx.arc(cir1,circe_y-cirr, 15, 0.9 * Math.PI, 2.1 * Math.PI);
-					<!-- ARROW -->
-					ctx.lineTo(cir1+10,circe_y-30);
-					ctx.moveTo(cir1+15,circe_y-20);
-					ctx.lineTo(cir1+20,circe_y-30);
 					ctx.stroke();
+					<!-- ARROW -->
+						arr(cir1+15,circe_y-20,6);
 					break;
 				case 1:
-					console.log("It is so difficult.")
+					
 					<!-- rl toright or toleft -->
-					var rl = this.value%10-parseInt(this.value/10);	
+					var rl = arb_b-arb_a;	
 					
 					<!-- line -->
 					ctx.moveTo(cir1+cirr*rl,circe_y+10*rl);
 					ctx.lineTo(cir2-cirr*rl,circe_y+10*rl);
-						
-					<!-- ARROW -->					
-					ctx.lineTo(cir2-(cirr+10)*rl,circe_y+10*rl+5);
-					ctx.moveTo(cir2-cirr*rl,circe_y+10*rl);
-					ctx.lineTo(cir2-(cirr+10)*rl,circe_y+10*rl-5);
-					ctx.stroke();					
+					<!-- ARROW -->
+					ctx.stroke();
+					<!-- parameter 7-(15)*rl is try most -->
+					arr(cir2-cirr*rl,circe_y+10*rl,7-(15)*rl);
 					break;
 				default:
 					<!-- circle_center(circle_x,circe_y) ridus=cirr->
 					<!-- rl toright or toleft -->
-					var rl_2 = parseInt((this.value%10-parseInt(this.value/10))/2);	
-					console.log(rl_2);
-					
+					var rl_2 = parseInt((arb_b-arb_a)/2);	
+							
 					<!-- line -->
 					ctx.beginPath();
-					ctx.moveTo(cir1-cirr/2*rl_2,circe_y-cirr*rl_2);
-					ctx.lineTo(cir1-cirr/2*rl_2,circe_y-cirr*rl_2+2);
-					ctx.bezierCurveTo(cir1+cirr*rl_2/2, circe_y-cirr*rl_2*3, cir1+cirr*rl_2*3.5, circe_y-cirr*rl_2*3,
-									cir2+cirr/2*rl_2,circe_y-cirr*rl_2);					
+					ctx.moveTo(cir1-cirr*rl_2,circe_y-cirr*rl_2/2);
+					ctx.bezierCurveTo(cir1-cirr*rl_2*1.5, circe_y-cirr*rl_2*3.6, cir2+cirr*rl_2*1.5, circe_y-cirr*rl_2*3.6,
+									cir2+cirr*rl_2,circe_y-cirr*rl_2/2);					
 					ctx.stroke();
 					<!-- ARROW -->					
-						ctx.beginPath();
-						ctx.moveTo(cir2+cirr/2*rl_2,circe_y-cirr*rl_2);
-						ctx.lineTo(cir2+cirr/2*rl_2,circe_y-cirr*rl_2*2);
-						<!-- ctx.quadraticCurveTo(cir2+cirr*rl_2,circe_y-cirr*rl_2*0.8,cir2+cirr/2*rl_2,circe_y-cirr*rl_2) -->
-						
+						arr(cir2+cirr*rl_2,circe_y-cirr*rl_2/2,-7+(15)*rl_2);
 					ctx.stroke();					
 			
 			}
@@ -73,7 +89,8 @@
 				var idbtn = document.getElementById("btn");
 				for (var bti=0;bti<9;bti++){
 					var btncr = document.createElement("button");
-					var t = document.createTextNode((parseInt(bti/3)+1)+"R"+(1+bti%3));
+					<!-- var t = document.createTextNode((parseInt(bti/3)+1)+"R"+(1+bti%3)); -->
+					var t = document.createTextNode(0);
 					btncr.appendChild(t);
 					btncr.value=bti%3+(parseInt(bti/3)+1)*10+1;
 					idbtn.appendChild(btncr);
@@ -98,13 +115,15 @@
 				}
 				
 		</script>
+<!-- style ---------------------------------------------------------------------------->
+<!-- style -->
 		<style>
 			#btn{width:350px;
 			height:200px;
 				display:grid;
 			grid-template-columns:auto auto auto;}
 			button{
-			
+			font:20px Arial;
 			width:100px;
 			height:50px;
 			}
@@ -114,7 +133,7 @@
 <!-- body -->
 	<body onload="btn();">
 		<!-- https://stackoverflow.com/questions/48247532-->
-		<div >MR=</div>
+		<div >MR={ 1 2 3}</div>
 		<div id="btn"></div>
 		<canvas id = "btnca" width ="300" heigth ="200" style="border:1px solid #000000;">
 		"瀏覽器不支援"
