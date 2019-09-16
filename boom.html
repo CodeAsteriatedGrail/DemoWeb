@@ -53,12 +53,12 @@
 	<body >
 	<div id="tool">
 		<div>
-			<p class="tool">地雷剩餘數量</p>
+			<p class="tool">地雷數量</p>
 			<label id="boomnum">2</label>
 		</div>
 		<div>
 			<p class="tool">計時器</p>
-			<label id="nowtime">000</label>
+			<label id="clock">000</label>
 		</div>
 		<div>
 			<button class="level" onclick="change(6)">easy(6x6)</button></br>
@@ -88,10 +88,17 @@
 	var boommap=[],randmap=[];
 	var boomi,boomj,boomnum;
 	var map = document.getElementsByClassName("map");
-	
+	var clock = document.getElementById("clock");
+	var showTime;
 	mapsize=3;//地圖尺寸
 	boomnum = 2;//地雷數量
+	clock.innerHTML=0;
 	
+	//計時器
+	function now(){
+		clock.innerHTML=parseInt(clock.innerHTML)+1;
+	}
+	var showTime = setInterval(now,1000);
 	//change mapsize
 	function change(size){
 		var st="";
@@ -100,6 +107,7 @@
 		<!-- map[0].style.grid-template-columns=st; -->
 		map[0].style.setProperty("--colNum",mapsize);
 		map[1].style.setProperty("--colNum",mapsize);
+		clock.innerHTML=0;
 		init();
 		mapOk();
 		
@@ -205,6 +213,7 @@
 			alert("boom");
 			for(let i= 0; i<btnAll.length; i++){
 			btnAll[i].setAttribute("disabled",false);
+			clearInterval(showTime);
 			}
 		}
 	}
