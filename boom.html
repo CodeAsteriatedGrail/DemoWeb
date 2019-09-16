@@ -193,11 +193,20 @@
 		if(ifmap==0)return "empty";
 		return "number";
 	}
-	
+	<!-- var btqnn= -->
 //遊戲
+	var btnAll = map[1].getElementsByTagName("button");
 	function game(me){
 		me.innerText=me.value;
 		me.setAttribute('class',switchMap(me.value));
+		
+		//boom
+		if(me.value=="*"){
+			alert("boom");
+			for(let i= 0; i<btnAll.length; i++){
+			btnAll[i].setAttribute("disabled",false);
+			}
+		}
 	}
 	
 </script>
