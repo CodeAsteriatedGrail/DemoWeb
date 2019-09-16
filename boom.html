@@ -2,143 +2,172 @@
 	<head>
 	<!-- style start -->
 	<style>
+	<!-- 動態CSS設定 -->
+	<!-- https://medium.com/@fionnachan/dynamic-number-of-rows-and-columns-with-css-grid-layout-and-css-variables-cb8e8381b6f2 -->
+		
 		*{
-		margin:5px;
+		
 		}
-
 		#tool{
+		display:grid;
+		grid-template-columns:auto auto auto;
 		background-color:lightblue;
+		}
+		
+		.mapcontainer{
+		background-color: lightgray;
 		}
 
 		.map{
-		width:120px; 
-		height:120px; 
-		background-color: lightgray;
+		width:110px;
+		
 		display: grid;
-		grid-template-columns: auto auto auto;
+		grid-template-columns: repeat(var(--colNum), auto) ;
 		}
 		.map >button{
+			margin:3px;
 			width:30px;
 			height:30px;
 		}
+		input{width:80px;}
 		.boom{
 			background-color: lightcoral;
 		}
 		.number{
+			background-color: white;
 			color: blue;
 		}
 		.empty{
-			color: white;
+			background-color: white;
 		}
+		:root {
+		width:80%;
+		margin:10px;
+		  --rowNum: 3;
+		  --colNum: 3;
+		  }
 	</style>
 	<!-- style end -->
 	</head>
-	
 	<!-- body start -->
 	<body >
-	
-	<table id="tool">
-		<tr>
-			<td>
+	<div id="tool">
+		<div>
 			<p class="tool">地雷剩餘數量</p>
-			</td>
-			<td>
+			<label id="boomnum">2</label>
+		</div>
+		<div>
 			<p class="tool">計時器</p>
-			</td>
-		</tr>
-		<tr>
-			<td>		
-			<input type="text"></input>
-			</td>
-			<td>
-			<input type="text"></input>
-			</td>
-		</tr>
-	</table>
-	
-	<p>上帝視角</p>
-	<div id="godmap" class="map" >
+			<label id="nowtime">000</label>
+		</div>
+		<div>
+			<button class="level" onclick="change(6)">easy(6x6)</button></br>
+			<button class="level" onclick="change(9)">medim(9X9)</button>
+		</div>
+			<!-- <label > 地圖尺寸：<input type="text" width="50px"></label> -->
+			<!-- <label > 地雷數量：<input type="text"></label> -->
+			<!-- <input type="submit" value="確定"> -->
+		
 	</div>
 	
-	<p>主地圖</p>
-	<div id="mainmap" class="map">
+	<div class="mapcontainer">
+		<p>上帝視角</p>
+		<div id="godmap" class="map" >
+		</div>	
 	</div>
 	
+	<div class="mapcontainer">
+		<p>主地圖</p>
+		<div id="mainmap" class="map">
+		</div>
+	</div>
 </body>
 <script>
-<!-- 建立地圖 -->
-	var map = document.getElementsByClassName("map");
+//地圖設定
 	var mapsize;
-	mapsize=3;
-	
-<!-- 放置炸彈 -->
-	console.log("0:unknow 1:empty 2:number *:boom")
-	var boommap=[],randmap=[],boom=[];	
+	var boommap=[],randmap=[];
 	var boomi,boomj,boomnum;
-	boomnum = 2;//炸彈數量
+	var map = document.getElementsByClassName("map");
 	
-	// init
-		//地圖初始化&放置炸彈
-		for(let bi=0; bi<mapsize**2; bi++){
-			randmap.push(0);
-			if(bi<boomnum)randmap[bi]="*";//*=炸彈
-		}
-		//隨機整數
-		function getRandInt(max){
-		return Math.floor(Math.random()*max);
-		}
+	mapsize=3;//地圖尺寸
+	boomnum = 2;//地雷數量
 	
-	//隨機炸彈位置
-		for (let numi=mapsize**2-1;numi>0;numi--){	
-			let j = getRandInt(numi+1);
-			[randmap[numi],randmap[j]]=[randmap[j],randmap[numi]]
-			//console.log("numi:",numi,"j:",j)
-		}
-		//測試輸出
-		randmap.forEach(function(item,index,array){
-			//console.log("[",index,"]=",item); 
-		});
+	//change mapsize
+	function change(size){
+		var st="";
+		mapsize = size;
+		boomnum = size-1;
+		<!-- map[0].style.grid-template-columns=st; -->
+		map[0].style.setProperty("--colNum",mapsize);
+		map[1].style.setProperty("--colNum",mapsize);
+		init();
+		mapOk();
 		
-	//把炸彈周圍更改數字
-		//randmap 1d轉2d boommap
-		for(let i=0; i<mapsize; i++){
+	}
+	init();
+	mapOk();
+	
+
+//製作地圖&放置地雷
+	function init(){
+	//地圖初始化
+	map[0].innerText="";
+	map[1].innerText="";
+	boommap.splice(0,boommap.length);
+	randmap.splice(0,randmap.length);
+	
+	console.log("---------------------------------");
+	console.log("9:unknow 0:empty 1~8:number *:boom");
+	console.log(boommap);
+	
+	for(let bi=0; bi< mapsize**2; bi++){
+		randmap.push(0);//預設為空地(empty)
+		if(bi< boomnum)randmap[bi]="*";//*=地雷
+	}
+	
+	//打亂地雷位置
+		for (let numi=mapsize**2-1;numi>0;numi--){
+			let j = Math.floor(Math.random()*(numi+1));
+			[randmap[numi],randmap[j]]=[randmap[j],randmap[numi]];
+		}
+		
+	
+	//randmap 1d轉2d boommap
+		for(let i=0; i< mapsize; i++){
 			boommap.push(randmap.splice(0,mapsize));
 		}
 		
-		//輸出地雷地圖
-		boommap.forEach(function(item,index,array){
-			console.log("[",index,"]=",item); 
-		});
-		
-		//更改數字
-		for(var newrow=0; newrow<mapsize; newrow++){
+	//更新地雷周圍數字
+		for(var newrow=0; newrow< mapsize; newrow++){
 			boommap[newrow].forEach(function(item,index,array){
 				if(item=="*"){
 					console.log(newrow,index,array);
 					trynum(newrow,index);
 				}
-				
 			});
 		}
-		//數字處理
+		//將九宮格範圍數字+1
 		function trynum(row,col){
-			console.log("boom:",row,col)
+			console.log("boom:",row,col)//地雷位置
 			var rowi,coli;
+			
 			for(var rgnine=0;rgnine<9; rgnine++){
 				rowi=row+Math.floor(rgnine/3)-1;
 				coli=col+(rgnine%3)-1;
 				
-				if((-1<rowi)&&(rowi<mapsize)
-				  &&(-1<coli)&&(coli<mapsize)
+				if((-1<rowi)&&(rowi<mapsize)//列沒超出範圍
+				  &&(-1<coli)&&(coli<mapsize)//欄沒超出範圍
 				  &&(boommap[rowi][coli]!=="*"))
 				{
 					console.log("add:",rowi,coli);
 					boommap[rowi][coli]+=1;
 				}
-			
 			}
 		}
-	//地圖完成
+	}	
+//地圖完成
+	function mapOk(){
+	
 	for (let wd=0;wd<mapsize**2;wd++){
 		let row =Math.floor(wd/mapsize);
 		let col =wd%mapsize;
@@ -156,7 +185,7 @@
 		btnMain.setAttribute('class',"unknow");
 		btnMain.setAttribute('onclick',"game(this)");
 		map[1].appendChild(btnMain);
-		
+	}
 	}
 	//判斷地圖狀態
 	function switchMap(ifmap){
@@ -165,9 +194,8 @@
 		return "number";
 	}
 	
-	//遊戲
+//遊戲
 	function game(me){
-		
 		me.innerText=me.value;
 		me.setAttribute('class',switchMap(me.value));
 	}
