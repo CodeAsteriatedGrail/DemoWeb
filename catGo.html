@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- style start -->
+	<style>
+		:root{
+			--mapWidth: 40px;
+			--mapHeigth: 40px;
+		}
+		
+		body(
+		background-color:black;
+		margin: 5px;
+		)
+		
+		/*FIXME:can't select .empty.chess.cat "
+		and .empty not run*/
+		
+		#map{
+			background-color:blue;		
+		}
+		
+		.cat{
+			background-color: red;
+			position: absolute;
+			width: var(--mapWidth);
+			height: var(--mapHeigth);
+		}
+		button{border-radius: 50%;}
+		.empty{
+			background-color: gray;
+			position: absolute;
+			width: var(--mapWidth);
+			height: var(--mapHeigth);
+		}
+		.chess{
+			background-color: lightblue;
+			position: absolute;
+			width: var(--mapWidth);
+			height: var(--mapHeigth);
+		}
+		
+	</style>
+	<!-- style end -->
+
+</head>
+<!-- head end -->
+<!-- body start -->
+<body>
+	
+	<div id="map"></div>
+	<div id="tool"> "em":"empty",
+		"ch":"chess",
+		"ca":"cat",</div>
+	<script>
+	
+	var map = document.getElementById("map");
+	var mapSize, chessSize,polySize;
+	var catRow,catCol;
+	var st="";
+	var mapArr=[],mapArr2D=[];
+	const mapData={
+		"em":"empty",
+		"ch":"chess",
+		"ca":"cat",
+	};
+	
+	mapSize=11;
+	chessSize = 7;
+	polySize=60;
+	catRow=4;
+	catCol=4;
+	
+	/**
+	*
+	*
+	*/
+	initMap();
+	createMap();
+	
+	/** initMap(){
+	*建陣列()
+	*洗牌()
+	*}
+	*/
+	function logMap(){
+		console.log("data: 0:empty, 1:chess, 2:cat")
+		for(let logi =0; logi<mapSize; ++logi){
+			let rowTemp=logi*mapSize;
+			console.log(mapArr.slice(rowTemp,rowTemp+mapSize));
+		}
+	}
+	function initMap(){
+		//建陣列
+		console.log("create array:");
+		for(let numi =0; numi<mapSize**2; numi++){
+			if(numi<chessSize){
+				mapArr.push("ch");}
+			else{
+			mapArr.push("em");}
+		}
+		logMap();
+		
+		//洗牌
+		console.log("randMap:")
+		for(let numi =mapArr.length-1; numi>0; --numi){
+			let randInt = Math.floor(Math.random()*(numi+1));
+			[mapArr[numi],mapArr[randInt]]=[mapArr[randInt],mapArr[numi]];
+		}
+		
+		logMap();
+	}
+	
+	/**createMap()
+	*1D Array convert 2D
+	*add map
+	*/
+	function createMap(){
+		//1D Array convert 2D
+		console.log("createMap:")
+		for(let len=0; len<mapSize; ++len){
+		mapArr2D.push(mapArr.splice(0,mapSize));
+		}
+		mapArr2D[catRow][catCol]="ca";
+		console.log(mapArr2D);
+		
+		//add map
+		for(let len=0; len<mapSize**2; ++len){
+			let row = Math.floor(len/mapSize);
+			let col = len%mapSize;
+			let top = 10+row*polySize*(3/4);
+			let left = 10+(row%2)*polySize/2+col*polySize*(3/4);
+			
+			map.innerHTML+=`<button
+				class="${mapData[mapArr2D[row][col]]}"
+				style="float: left; position: absolute;
+				top:${top}px; 
+				left:${left}px;">
+					${mapArr2D[row][col]}
+				</button>`;
+		}
+	}	
+	</script>
+	
+</body>
+</html>
