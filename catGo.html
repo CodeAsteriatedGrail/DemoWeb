@@ -17,6 +17,7 @@
 		/*FIXME:can't select .empty.chess.cat "
 		and .empty not run*/{}
 		.cat{
+			float: left;
 			background-color: red;
 			position: absolute;
 			width: var(--mapWidth);
@@ -24,12 +25,14 @@
 		}
 		button{border-radius: 50%;}
 		.empty{
+			float: left;
 			background-color: gray;
 			position: absolute;
 			width: var(--mapWidth);
 			height: var(--mapHeigth);
 		}
 		.chess{
+			float: left;
 			background-color: lightblue;
 			position: absolute;
 			width: var(--mapWidth);
@@ -77,8 +80,8 @@
 	mapSize=11;
 	chessSize = 7;
 	polySize=70;
-	catRow=4;
-	catCol=4;
+	catRow=3;
+	catCol=3;
 	
 	/**
 	*
@@ -86,27 +89,84 @@
 	*/
 	initMap();
 	createMap();
-	move();
+	move();//加入下棋事件
 	
-	//下棋&cat move
+	//catMove()
+	function catMove(){
+		var btn= map.querySelectorAll("button");
+		console.log("cat now:",catRow,catCol);
+		
+		let catNow= catRow*11+ catCol;
+		btn[catNow].setAttribute("class","empty");
+		btn[catNow].setAttribute("onclick","chessDown(this)");
+		
+		let mi= parseInt((catRow%2)*2);
+		let polyNei=[1,-1,10+mi,11,-11,-12+mi];
+		
+		let rand= Math.floor(Math.random()*6);
+		//cat polyRange(1)
+		let j=0;
+		while(j<6){
+			rand=(rand+j)%6;
+			if(btn[catNow+polyNei[rand]].className=="empty"){
+				
+				btn[catNow+polyNei[rand]].setAttribute("class","cat");
+				let arr =btn[catNow+polyNei[rand]].value.split(",");
+				
+				catRow= parseInt(arr[0]);
+				catCol= parseInt(arr[1]);
+				
+				break;
+			}
+			j+=1;
+			if(j==6){
+				alert("you win");
+			}
+		}
+		
+		<!-- for(let i=0; i<6; ++i){ -->
+			<!-- if(btn[catNow+polyNei[i]].className!="chess"){ -->
+				<!-- btn[catNow+polyNei[i]].style.setProperty("background-color","lightpink"); -->
+			<!-- } -->
+		<!-- } -->
+	}
+	
+	/**move(){
+	*add onclick=chessDown();
+	*}
+	*/
 	function move(){
-		var btn= document.querySelectorAll("button");
 		var cout= document.getElementById("count");
+		var empMap= document.querySelectorAll(".empty");
 		
-		function chessDown(ev){
-			ev.setAttribute("class","chess");
-			count.innerHTML= parseInt(count.innerHTML)+1;
+		//add onclick
+		for(let i=0; i<empMap.length; ++i){
+			empMap[i].setAttribute("onclick","chessDown(this)");
 		}
+	}
+	/**下棋觸發事件(){
+	*change map
+	* cat move}
+	*/
+	function chessDown(ev){
+		let arr=[];
+		arr= ev.value.split(",");
+		let row= parseInt(arr[0]);
+		let col= parseInt(arr[1]);
+		console.log("chess move to:",arr[0],",",arr[1]);
 		
-		for(let i=0; i<btn.length; ++i){
-			btn[i].setAttribute("onclick","chessDown(this)");
-		}
+		//地圖狀態改變
+		ev.setAttribute("class","chess");
+		count.innerHTML= parseInt(count.innerHTML)+1;
+		mapArr2D[row][col]="ch";
+		ev.innerHTML="ch";
+		
+		catMove();
 	}
 	
 	/** initMap(){
 	*建陣列()
-	*洗牌()
-	*}
+	*地圖洗牌()
 	*/
 	function logMap(){
 		console.log("data: 0:empty, 1:chess, 2:cat")
@@ -138,7 +198,7 @@
 	
 	/**createMap()
 	*1D Array convert 2D
-	*add map
+	*add map to html
 	*/
 	function createMap(){
 		//1D Array convert 2D
@@ -158,11 +218,13 @@
 			
 			map.innerHTML+=`<button
 				class="${mapData[mapArr2D[row][col]]}"
-				style="float: left; position: absolute;
-				top:${top}px; 
-				left:${left}px;">
+				style="
+					top:${top}px; 
+					left:${left}px;"
+					value="${row},${col}">
 					${mapArr2D[row][col]}<br/>
 					${row},${col}
+				
 				</button>`;
 		}
 	}	
