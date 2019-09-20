@@ -5,8 +5,8 @@
 	<!-- style start -->
 	<style>
 		:root{
-			--mapWidth: 40px;
-			--mapHeigth: 40px;
+			--mapWidth: 50px;
+			--mapHeigth: 50px;
 		}
 		
 		body(
@@ -15,12 +15,7 @@
 		)
 		
 		/*FIXME:can't select .empty.chess.cat "
-		and .empty not run*/
-		
-		#map{
-			background-color:blue;		
-		}
-		
+		and .empty not run*/{}
 		.cat{
 			background-color: red;
 			position: absolute;
@@ -40,7 +35,14 @@
 			width: var(--mapWidth);
 			height: var(--mapHeigth);
 		}
-		
+		#map{
+			height:600px;
+			background-color:lightyellow;
+		}
+		#tool{
+			display: -webkit-flex;
+			-webkit-flex-direction: row;
+		}
 	</style>
 	<!-- style end -->
 
@@ -49,12 +51,18 @@
 <!-- body start -->
 <body>
 	
-	<div id="map"></div>
-	<div id="tool"> "em":"empty",
+	<div id="map" class="map"></div>
+	<div id="tool">
+		<p>總共走了</p>
+		<p id="count">0</p>
+		<p>步</p><br/>
+		<p>
+		"em":"empty",
 		"ch":"chess",
-		"ca":"cat",</div>
+		"ca":"cat",</p>
+	</div>
 	<script>
-	
+	//設定檔
 	var map = document.getElementById("map");
 	var mapSize, chessSize,polySize;
 	var catRow,catCol;
@@ -68,7 +76,7 @@
 	
 	mapSize=11;
 	chessSize = 7;
-	polySize=60;
+	polySize=70;
 	catRow=4;
 	catCol=4;
 	
@@ -78,6 +86,22 @@
 	*/
 	initMap();
 	createMap();
+	move();
+	
+	//下棋&cat move
+	function move(){
+		var btn= document.querySelectorAll("button");
+		var cout= document.getElementById("count");
+		
+		function chessDown(ev){
+			ev.setAttribute("class","chess");
+			count.innerHTML= parseInt(count.innerHTML)+1;
+		}
+		
+		for(let i=0; i<btn.length; ++i){
+			btn[i].setAttribute("onclick","chessDown(this)");
+		}
+	}
 	
 	/** initMap(){
 	*建陣列()
@@ -137,7 +161,8 @@
 				style="float: left; position: absolute;
 				top:${top}px; 
 				left:${left}px;">
-					${mapArr2D[row][col]}
+					${mapArr2D[row][col]}<br/>
+					${row},${col}
 				</button>`;
 		}
 	}	
