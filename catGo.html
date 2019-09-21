@@ -69,8 +69,6 @@
 	var map = document.getElementById("map");
 	var mapSize, chessSize,polySize;
 	var catRow,catCol;
-	var st="";
-	var mapArr=[],mapArr2D=[];
 	const mapData={
 		"em":"empty",
 		"ch":"chess",
@@ -91,6 +89,7 @@
 	createMap();
 	move();//加入下棋事件
 	
+	//FIXME:if(game over){stop cat};
 	//catMove()
 	function catMove(){
 		var btn= map.querySelectorAll("button");
@@ -109,7 +108,6 @@
 		while(j<6){
 			rand=(rand+j)%6;
 			if(btn[catNow+polyNei[rand]].className=="empty"){
-				
 				btn[catNow+polyNei[rand]].setAttribute("class","cat");
 				let arr =btn[catNow+polyNei[rand]].value.split(",");
 				
@@ -165,56 +163,58 @@
 	}
 	
 	/** initMap(){
-	*建陣列()
-	*地圖洗牌()
+	*create mapArray init empty
+	*1D convert 2D
+	*add cat
+	*random add chess to map
+	*參考ccutmis大https://stackoverflow.com/questions/34773846/
 	*/
-	function logMap(){
-		console.log("data: 0:empty, 1:chess, 2:cat")
-		for(let logi =0; logi<mapSize; ++logi){
-			let rowTemp=logi*mapSize;
-			console.log(mapArr.slice(rowTemp,rowTemp+mapSize));
-		}
-	}
-	function initMap(){
-		//建陣列
-		console.log("create array:");
-		for(let numi =0; numi<mapSize**2; numi++){
-			if(numi<chessSize){
-				mapArr.push("ch");}
-			else{
-			mapArr.push("em");}
-		}
-		logMap();
-		
-		//洗牌
-		console.log("randMap:")
-		for(let numi =mapArr.length-1; numi>0; --numi){
-			let randInt = Math.floor(Math.random()*(numi+1));
-			[mapArr[numi],mapArr[randInt]]=[mapArr[randInt],mapArr[numi]];
-		}
-		
-		logMap();
-	}
 	
-	/**createMap()
-	*1D Array convert 2D
-	*add map to html
-	*/
-	function createMap(){
+	var mapArr,mapArr2D;
+	function initMap(){
+		//create mapArray 
+		mapArr=new Array(mapSize);
+		mapArr2D=new Array(mapSize);
+		
 		//1D Array convert 2D
-		console.log("createMap:")
-		for(let len=0; len<mapSize; ++len){
-		mapArr2D.push(mapArr.splice(0,mapSize));
+		console.log("create mapArray init empty:");
+		for(let col=0; col<mapSize; col++){
+			mapArr[col]= "em";
 		}
+		for(let row=0; row<mapSize; row++){
+			mapArr2D[row] = mapArr.slice(0);
+		}
+		//add cat
 		mapArr2D[catRow][catCol]="ca";
 		console.log(mapArr2D);
 		
+		//random add chess to map
+		console.log("random add chess to map:")
+		var chess= 0;
+		while(chess<chessSize){
+			let row = Math.floor(Math.random()*(mapSize));
+			let col = Math.floor(Math.random()*(mapSize));
+			
+			if(mapArr2D[row][col]=="em"){
+				chess+=1;
+				mapArr2D[row][col]= "ch";
+			}
+		}
+		console.log(mapArr2D);
+	}
+		
+	/**createMap()
+	*
+	*add map to html
+	*/
+	function createMap(){
 		//add map
 		for(let len=0; len<mapSize**2; ++len){
 			let row = Math.floor(len/mapSize);
 			let col = len%mapSize;
-			let top = 10+row*polySize*(3/4);
-			let left = 10+(row%2)*polySize/2+col*polySize*(3/4);
+			
+			let top = 10+row*polySize*0.7;
+			let left = 10+(row%2)*polySize/2+col*polySize*0.7;
 			
 			map.innerHTML+=`<button
 				class="${mapData[mapArr2D[row][col]]}"
