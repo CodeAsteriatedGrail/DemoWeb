@@ -91,40 +91,45 @@
 	
 	//FIXME:if(game over){stop cat};
 	//catMove()
+	var catDir ;
 	function catMove(){
-		var btn= map.querySelectorAll("button");
-		console.log("cat now:",catRow,catCol);
-		
+		var mapBtn= map.querySelectorAll("button");
 		let catNow= catRow*11+ catCol;
-		btn[catNow].setAttribute("class","empty");
-		btn[catNow].setAttribute("onclick","chessDown(this)");
-		
 		let mi= parseInt((catRow%2)*2);
 		let polyNei=[1,-1,10+mi,11,-11,-12+mi];
-		
 		let rand= Math.floor(Math.random()*6);
+		//避免來回跑
+		if(rand== catDir){
+			rand+=1;
+		}
 		//cat polyRange(1)
 		let j=0;
 		while(j<6){
 			rand=(rand+j)%6;
-			if(btn[catNow+polyNei[rand]].className=="empty"){
-				btn[catNow+polyNei[rand]].setAttribute("class","cat");
-				let arr =btn[catNow+polyNei[rand]].value.split(",");
+			if(mapBtn[catNow+polyNei[rand]].className=="empty"){
+				mapBtn[catNow+polyNei[rand]].setAttribute("class","cat");
+				let arr =mapBtn[catNow+polyNei[rand]].value.split(",");
 				
 				catRow= parseInt(arr[0]);
 				catCol= parseInt(arr[1]);
-				
+				console.log("cat now:",catRow,catCol);
+				catDir= rand;
 				break;
 			}
 			j+=1;
 			if(j==6){
 				alert("you win");
+				break;
 			}
 		}
 		
+		//cat change empty
+		mapBtn[catNow].setAttribute("class","empty");
+		mapBtn[catNow].setAttribute("onclick","chessDown(this)");
+		
 		<!-- for(let i=0; i<6; ++i){ -->
-			<!-- if(btn[catNow+polyNei[i]].className!="chess"){ -->
-				<!-- btn[catNow+polyNei[i]].style.setProperty("background-color","lightpink"); -->
+			<!-- if(mapBtn[catNow+polyNei[i]].className!="chess"){ -->
+				<!-- mapBtn[catNow+polyNei[i]].style.setProperty("background-color","lightpink"); -->
 			<!-- } -->
 		<!-- } -->
 	}
@@ -208,7 +213,6 @@
 	*add map to html
 	*/
 	function createMap(){
-		//add map
 		for(let len=0; len<mapSize**2; ++len){
 			let row = Math.floor(len/mapSize);
 			let col = len%mapSize;
