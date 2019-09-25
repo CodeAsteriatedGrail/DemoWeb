@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<style>
+			
+			
+			#map{
+				display:flex;
+				background-color:black;
+			}
+			
+			.col{
+				display:flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			.poly{
+				display:flex;
+				justify-content:center;
+				background-color:gray;
+				width:50px;
+				height:46px;
+				clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+			}
+		</style>
+		<!-- style end -->
+	</head>
+	<body>
+		<div id="turn">回合指示物</div>
+		<div id="map">地圖</div>
+		<div id="tool">工具列</div>
+		<div id="goldFinger">
+			<label>mapSize:
+				<input id="mapSize"/>
+				<button>ok</button>
+			</label>
+		</div>
+		
+		<script>
+	<!-- index -->
+	var map= document.getElementById("map");
+	var mapSize =5;
+	
+	var mapData={
+		empty:0,
+		red:3,
+		white:3,
+		hole:3
+	};
+	var mapLen= mapSize*2-1;
+	var mapArr= new Array(mapLen);
+	mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
+	initMap();
+	drawMap();
+	
+	//initMap
+	function initMap(){
+		map.innerHTML="";
+		
+		let copyArr=[];
+		for(let row= 0; row<mapLen; ++row){
+			copyArr.push("em");
+		}
+		for(let col=0; col<mapLen; ++col){
+			<!-- FIXME:can be good -->
+			let now= mapSize-1;
+			if(col<mapSize){
+				now= now- col;
+			}
+			else{
+				now= col-4;
+			}
+			
+			mapArr[col]= copyArr.slice(now);
+			console.log(col,mapArr[col]);
+		}
+	}
+	
+	//view	
+	<!-- function drawMap(){ -->
+		<!-- for(let col=0; col<mapLen; ++col){ -->
+			<!-- map.innerHTML+="<div class=col>" -->
+			
+			<!-- for(let row=0; row< mapArr[row].length; ++row){ -->
+				<!-- map.innerHTML+= -->
+				<!-- `<div class="poly"> -->
+				<!-- </div>`; -->
+			<!-- } -->
+			
+			<!-- map.innerHTML+="<div>"; -->
+		<!-- } -->
+	<!-- } -->
+	function drawMap(){
+		for(let col=0; col<mapLen; ++col){
+			map.innerHTML+=
+			`<div class="col">
+			</div>`;
+		}
+		var mapCol= document.querySelectorAll(".col");
+		for(let col=0; col<mapLen; ++col){
+			for(let row=0; row< mapArr[col].length-1; ++row){
+				mapCol[col].innerHTML+=
+				`<div class="poly">
+				</div>`;
+			}
+		}
+			
+		
+	}
+	</script>
+	</body>
+</html>
