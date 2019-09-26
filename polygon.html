@@ -3,25 +3,28 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<style>
-			
-			
 			#map{
 				display:flex;
-				background-color:black;
+				background-color:darkgray;
+				padding: 10px;
+				width: fit-content;
 			}
 			
 			.col{
 				display:flex;
 				flex-direction: column;
 				justify-content: center;
+				
+				margin:0px -3px;
 			}
 			.poly{
 				display:flex;
 				justify-content:center;
-				background-color:gray;
+				background-color:#9C27B0;
 				width:50px;
 				height:46px;
-				clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+				clip-path: polygon(25% 0%, 75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);
+				margin: 3px 0px;
 			}
 		</style>
 		<!-- style end -->
@@ -33,15 +36,17 @@
 		<div id="goldFinger">
 			<label>mapSize:
 				<input id="mapSize"/>
-				<button>ok</button>
+				<button id="getMapSize">ok</button>
 			</label>
 		</div>
 		
 		<script>
+	//FIXME:you can do best
 	<!-- index -->
 	var map= document.getElementById("map");
+	var getMapS= document.getElementById("getMapSize");
+	var MapS= document.getElementById("mapSize");
 	var mapSize =5;
-	
 	var mapData={
 		empty:0,
 		red:3,
@@ -51,8 +56,27 @@
 	var mapLen= mapSize*2-1;
 	var mapArr= new Array(mapLen);
 	mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
+	
 	initMap();
 	drawMap();
+	getMapS.setAttribute("onclick","newGame()");
+	
+	//newGame
+	function newGame(){
+		mapSize=MapS.value;
+		mapData={
+			empty:0,
+			red:3,
+			white:3,
+			hole:3
+		};
+		mapLen= mapSize*2-1;
+		mapArr= new Array(mapLen);
+		mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
+		initMap();
+		drawMap();
+	}
+	
 	
 	//initMap
 	function initMap(){
@@ -63,51 +87,30 @@
 			copyArr.push("em");
 		}
 		for(let col=0; col<mapLen; ++col){
-			<!-- FIXME:can be good -->
-			let now= mapSize-1;
-			if(col<mapSize){
-				now= now- col;
-			}
-			else{
-				now= col-4;
-			}
-			
+			let now= Math.abs(mapSize-1-col);
 			mapArr[col]= copyArr.slice(now);
 			console.log(col,mapArr[col]);
 		}
 	}
 	
-	//view	
-	<!-- function drawMap(){ -->
-		<!-- for(let col=0; col<mapLen; ++col){ -->
-			<!-- map.innerHTML+="<div class=col>" -->
-			
-			<!-- for(let row=0; row< mapArr[row].length; ++row){ -->
-				<!-- map.innerHTML+= -->
-				<!-- `<div class="poly"> -->
-				<!-- </div>`; -->
-			<!-- } -->
-			
-			<!-- map.innerHTML+="<div>"; -->
-		<!-- } -->
-	<!-- } -->
+	//view
 	function drawMap(){
 		for(let col=0; col<mapLen; ++col){
 			map.innerHTML+=
 			`<div class="col">
 			</div>`;
 		}
+		
 		var mapCol= document.querySelectorAll(".col");
 		for(let col=0; col<mapLen; ++col){
-			for(let row=0; row< mapArr[col].length-1; ++row){
+			for(let row=0; row< mapArr[col].length; ++row){
 				mapCol[col].innerHTML+=
 				`<div class="poly">
 				</div>`;
 			}
 		}
-			
-		
 	}
+	
 	</script>
 	</body>
 </html>
