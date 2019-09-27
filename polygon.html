@@ -17,7 +17,7 @@
 				
 				margin:0px -3px;
 			}
-			.poly{
+			.em, .ho, .wh, .red{
 				display:flex;
 				justify-content:center;
 				background-color:#9C27B0;
@@ -26,6 +26,11 @@
 				clip-path: polygon(25% 0%, 75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);
 				margin: 3px 0px;
 			}
+			
+			.ho{background-color:darkgray;}
+			.wh{background-color:#ffffff;}
+			.red{background-color:red;}
+			
 		</style>
 		<!-- style end -->
 	</head>
@@ -77,20 +82,38 @@
 		drawMap();
 	}
 	
-	
 	//initMap
 	function initMap(){
 		map.innerHTML="";
 		
+		//create bigest row
 		let copyArr=[];
-		for(let row= 0; row<mapLen; ++row){
+		for(let row= 0; row< mapLen; ++row){
 			copyArr.push("em");
 		}
+		
+		//check the column how rows & add
 		for(let col=0; col<mapLen; ++col){
 			let now= Math.abs(mapSize-1-col);
 			mapArr[col]= copyArr.slice(now);
 			console.log(col,mapArr[col]);
 		}
+		
+		//FIXME:you can do best
+		//mapArr[col][row] add hole
+		mapArr[mapSize][mapSize-1]="ho";//5 o'clk
+		mapArr[mapSize-2][mapSize-1]="ho";//7 o'clk
+		mapArr[mapSize-1][mapSize-2]="ho";//12 o'clk
+		
+		//mapArr[col][row] add white
+		mapArr[mapLen-1][mapSize-1]="wh";//4 o'clk
+		mapArr[0][mapSize-1]="wh";//8 o'clk
+		mapArr[mapSize-1][0]="wh";//12 o'clk
+		
+		//mapArr[col][row] add red
+		mapArr[mapLen-1][0]="red";//2 o'clk
+		mapArr[mapSize-1][mapLen-1]="red";//6 o'clk
+		mapArr[0][0]="red";//10 o'clk
 	}
 	
 	//view
@@ -101,11 +124,14 @@
 			</div>`;
 		}
 		
+		//draw polygon
 		var mapCol= document.querySelectorAll(".col");
 		for(let col=0; col<mapLen; ++col){
 			for(let row=0; row< mapArr[col].length; ++row){
 				mapCol[col].innerHTML+=
-				`<div class="poly">
+				`<div class="${mapArr[col][row]}">
+					${row},${col}<br/>
+					${mapArr[col][row]}
 				</div>`;
 			}
 		}
