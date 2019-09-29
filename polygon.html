@@ -46,29 +46,28 @@
 		</div>
 		
 		<script>
-	//FIXME:you can do best
 	<!-- index -->
 	var map= document.getElementById("map");
 	var getMapS= document.getElementById("getMapSize");
 	var MapS= document.getElementById("mapSize");
-	var mapSize =5;
+	var mapSize, mapLen,mapArr;
 	var mapData={
 		empty:0,
 		red:3,
 		white:3,
 		hole:3
 	};
-	var mapLen= mapSize*2-1;
-	var mapArr= new Array(mapLen);
-	mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
-	
-	initMap();
-	drawMap();
+	mapSize= 5;
+	main();
 	getMapS.setAttribute("onclick","newGame()");
-	
 	//newGame
 	function newGame(){
 		mapSize=MapS.value;
+		main();
+	}
+	
+	//main
+	function main(){
 		mapData={
 			empty:0,
 			red:3,
@@ -80,6 +79,7 @@
 		mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
 		initMap();
 		drawMap();
+		addClick();
 	}
 	
 	//initMap
@@ -116,6 +116,51 @@
 		mapArr[0][0]="red";//10 o'clk
 	}
 	
+	//addClick
+	function addClick(){
+		var polyAll=document.querySelectorAll(".wh, .red");
+		for(let poly=0; poly<polyAll.length; ++poly){
+			polyAll[poly].setAttribute("onclick","moveMode(this)");
+		}
+		console.log("click",polyAll.length);
+	}
+	
+	function moveMode(ev){
+		let index= [];
+		let colAll= document.querySelectorAll(".col");
+		
+		index=ev.getAttribute("value").split(",");
+		let col= parseInt(index[1]);
+		let row= parseInt(index[0]);
+		console.log("click:",index);
+		
+		let top= colAll[col].querySelectorAll("div");
+		console.log(top);
+		
+		if((row+1)<top.length){
+		top[row+1].style.setProperty("background-color","green");}
+		
+		if((row-1)>0){
+		top[row-1].style.setProperty("background-color","green");}
+		
+		if((col-1)>0){
+			top= colAll[col-1].querySelectorAll("div");
+			if((row+1)<top.length){
+			top[row+1].style.setProperty("background-color","green");}
+			
+			if((row+1)<top.length){
+			top[row+1].style.setProperty("background-color","green");}
+			}
+			
+		if((col+1)<colAll.length){
+			top= colAll[col+1].querySelectorAll("div");
+			if((row+1)<top.length){
+			top[row+1].style.setProperty("background-color","green");}
+			if((row+1)<top.length){
+			top[row+1].style.setProperty("background-color","green");}
+			}
+	}
+	
 	//view
 	function drawMap(){
 		for(let col=0; col<mapLen; ++col){
@@ -129,7 +174,8 @@
 		for(let col=0; col<mapLen; ++col){
 			for(let row=0; row< mapArr[col].length; ++row){
 				mapCol[col].innerHTML+=
-				`<div class="${mapArr[col][row]}">
+				`<div class="${mapArr[col][row]}" 
+					value="${row},${col}">
 					${row},${col}<br/>
 					${mapArr[col][row]}
 				</div>`;
