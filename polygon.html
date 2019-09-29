@@ -128,45 +128,47 @@
 	
 	//domMap
 	function domMap(row,col){
+		//check this.col not run out map
 		const selMap= document.querySelectorAll(".col");
+		if((selMap.length<=col)||(col<0)){
+			return false;}
+			
+		//check this.row not run out map
 		const mapAll= selMap[col].querySelectorAll("div");
+		if((selMap.length<=row)||(row<0)){
+			return false;}
+			
+		console.log("row,col",row,col);
 		return mapAll[row];
 	}
 	
 	//moveMode
 	function moveMode(e){
 		let index,col,row,rangeArr;
-		
 		index= e.getAttribute("value").split(",").map(Number);
 		console.log("click:",index);
+		
 		rangeArr=polyRange(index);
-		domMap(3,4).style.setProperty("background-color","green");
 		
-		
-		
-		<!-- for(let dir=0; dir<rangeArr.length; ++dir){ -->
-			<!-- selMap= -->
-		<!-- } -->
-		<!-- if((row+1)<top.length){ -->
-		<!-- top[row+1].style.setProperty("background-color","green");} -->
-		
-		<!-- if((row-1)>0){ -->
-		<!-- top[row-1].style.setProperty("background-color","green");} -->
-		
-		
+		for(let dir=0; dir<rangeArr.length; ++dir){
+			if(domMap(rangeArr[dir][0],rangeArr[dir][1])){
+				let mapBl= domMap(rangeArr[dir][0],rangeArr[dir][1]);
+				mapBl.style.setProperty("background-color","green");
+			}
+		}
 	}
 	
 	//polyRange
 	function polyRange(index){
-		const [row, col]=index;
-		let rangeArr= [];
-		let colL= (col<mapSize)?-1:0;
-		let colR= (col>mapSize)?-1:0;
+		let [row, col]=index;
+		let colL= (mapSize>col)?-1:0;
+		let colR= (col>=mapSize-1)?-1:0;
 		
 		//polyRange six direction
-		rangeArr=[
+		const rangeArr=[
 			[row+colL,col-1],[row-1,col],[row+colR,col+1],
 			[row+colL+1,col-1],[row+1,col],[row+colR+1,col+1]];
+		console.log("rangeArr:",rangeArr,col)
 		return rangeArr;
 	}
 	
