@@ -47,11 +47,11 @@
 		
 		<script>
 	<!-- index -->
-	var map= document.getElementById("map");
-	var getMapS= document.getElementById("getMapSize");
-	var MapS= document.getElementById("mapSize");
-	var mapSize, mapLen,mapArr;
-	var mapData={
+	const map= document.getElementById("map");
+	const getMapS= document.getElementById("getMapSize");
+	let MapS= document.getElementById("mapSize");
+	let mapSize, mapLen, mapArr;
+	let mapData={
 		empty:0,
 		red:3,
 		white:3,
@@ -60,6 +60,7 @@
 	mapSize= 5;
 	main();
 	getMapS.setAttribute("onclick","newGame()");
+	
 	//newGame
 	function newGame(){
 		mapSize=MapS.value;
@@ -125,40 +126,48 @@
 		console.log("click",polyAll.length);
 	}
 	
-	function moveMode(ev){
-		let index= [];
-		let colAll= document.querySelectorAll(".col");
+	//domMap
+	function domMap(row,col){
+		const selMap= document.querySelectorAll(".col");
+		const mapAll= selMap[col].querySelectorAll("div");
+		return mapAll[row];
+	}
+	
+	//moveMode
+	function moveMode(e){
+		let index,col,row,rangeArr;
 		
-		index=ev.getAttribute("value").split(",");
-		let col= parseInt(index[1]);
-		let row= parseInt(index[0]);
+		index= e.getAttribute("value").split(",").map(Number);
 		console.log("click:",index);
+		rangeArr=polyRange(index);
+		domMap(3,4).style.setProperty("background-color","green");
 		
-		let top= colAll[col].querySelectorAll("div");
-		console.log(top);
 		
-		if((row+1)<top.length){
-		top[row+1].style.setProperty("background-color","green");}
 		
-		if((row-1)>0){
-		top[row-1].style.setProperty("background-color","green");}
+		<!-- for(let dir=0; dir<rangeArr.length; ++dir){ -->
+			<!-- selMap= -->
+		<!-- } -->
+		<!-- if((row+1)<top.length){ -->
+		<!-- top[row+1].style.setProperty("background-color","green");} -->
 		
-		if((col-1)>0){
-			top= colAll[col-1].querySelectorAll("div");
-			if((row+1)<top.length){
-			top[row+1].style.setProperty("background-color","green");}
-			
-			if((row+1)<top.length){
-			top[row+1].style.setProperty("background-color","green");}
-			}
-			
-		if((col+1)<colAll.length){
-			top= colAll[col+1].querySelectorAll("div");
-			if((row+1)<top.length){
-			top[row+1].style.setProperty("background-color","green");}
-			if((row+1)<top.length){
-			top[row+1].style.setProperty("background-color","green");}
-			}
+		<!-- if((row-1)>0){ -->
+		<!-- top[row-1].style.setProperty("background-color","green");} -->
+		
+		
+	}
+	
+	//polyRange
+	function polyRange(index){
+		const [row, col]=index;
+		let rangeArr= [];
+		let colL= (col<mapSize)?-1:0;
+		let colR= (col>mapSize)?-1:0;
+		
+		//polyRange six direction
+		rangeArr=[
+			[row+colL,col-1],[row-1,col],[row+colR,col+1],
+			[row+colL+1,col-1],[row+1,col],[row+colR+1,col+1]];
+		return rangeArr;
 	}
 	
 	//view
@@ -170,7 +179,7 @@
 		}
 		
 		//draw polygon
-		var mapCol= document.querySelectorAll(".col");
+		let mapCol= document.querySelectorAll(".col");
 		for(let col=0; col<mapLen; ++col){
 			for(let row=0; row< mapArr[col].length; ++row){
 				mapCol[col].innerHTML+=
