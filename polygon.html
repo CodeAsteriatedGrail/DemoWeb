@@ -125,11 +125,9 @@
 	//FIXED:id replace value
 	//domMap
 	function domMap(row,col){
-		<!-- let selMap= document.querySelectorAll(".col"); -->
-		<!-- let mapAll= selMap[col].querySelectorAll("div"); -->
 		let mapAll= document.getElementById(row+","+col);
-		console.log("row,col",row,col);
-		<!-- return mapAll[row]; -->
+		console.log("row,col=",row,col,);
+		
 		return mapAll;
 	}
 	
@@ -180,29 +178,23 @@
 			[row+colL,col-1],[row-1,col],[row+colR,col+1],
 			[row+colL+1,col-1],[row+1,col],[row+colR+1,col+1]];
 		
-		//filter (big&equal 0)&& (less than mapLen)
+		//check rgArr in the map
 		let lenNum=rgArr.length;
 		for(let len=0; len<lenNum; ++len){
-			if((rgArr[len][0]>=0)&&(rgArr[len][1]>=0)&&
-			(mapLen>rgArr[len][1])){
-				filterNa.push(rgArr[len]);
+			if(!!domMap(rgArr[len][0],rgArr[len][1])){
+				result.push(rgArr[len]);
 			}
 		}
 		
-		//filter less than the column of row
-		lenNum=filterNa.length;
-		for(let len=0; len<lenNum; ++len){
-			let maxRow= mapArr[filterNa[len][1]].length;
-			if(maxRow>filterNa[len][0]){
-				result.push(filterNa[len]);
-			}
-		}
-		
-		console.log("polyRange().result:",result);
-		
+		console.log("polyRange()result:",result);
 		return result;
 	}
 	
+	class PolyStatus{
+		constructor(){
+		}
+		
+	}
 	//view
 	function drawMap(){
 		map.innerHTML="";
