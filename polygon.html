@@ -49,7 +49,7 @@
 		<script>
 	<!-- index -->
 	const map= document.getElementById("map");
-	let MapS= document.getElementById("newSize");
+	let mapS= document.getElementById("newSize");
 	let mapSize, mapLen;
 	let mapData, mapArr;
 	
@@ -58,7 +58,7 @@
 	
 	//newGame
 	function newGame(){
-		mapSize=MapS.value;
+		mapSize= mapS.value;
 		main();
 	}
 	
@@ -73,6 +73,7 @@
 		mapLen= mapSize*2-1;
 		mapArr= new Array(mapLen);
 		mapData.empty= (9/5)*(3**mapSize)+-(4/5)*((-2)**mapSize);
+		
 		initMap();
 		drawMap();
 		addClick();
@@ -80,7 +81,7 @@
 	
 	//initMap
 	function initMap(){
-		map.innerHTML="";
+		
 		
 		//create bigest row
 		let copyArr=[];
@@ -92,7 +93,6 @@
 		for(let col=0; col<mapLen; ++col){
 			let now= Math.abs(mapSize-1-col);
 			mapArr[col]= copyArr.slice(now);
-			console.log(col,mapArr[col]);
 		}
 		
 		//FIXME:you can do best
@@ -110,52 +110,56 @@
 		mapArr[mapLen-1][0]="red";//2 o'clk
 		mapArr[mapSize-1][mapLen-1]="red";//6 o'clk
 		mapArr[0][0]="red";//10 o'clk
+		
+		console.log("mapArr[col][row]",mapArr);
 	}
 	
 	//addClick
 	function addClick(){
-		var polyAll=document.querySelectorAll(".wh, .red");
+		let polyAll= document.querySelectorAll(".wh, .red");
 		for(let poly=0; poly<polyAll.length; ++poly){
 			polyAll[poly].setAttribute("onclick","moveMode(this)");
 		}
-		console.log("addClick():",polyAll.length);
 	}
 	
-	//TODAY:some add to polyRange()
+	//FIXED:id replace value
 	//domMap
 	function domMap(row,col){
-		const selMap= document.querySelectorAll(".col");
-		const mapAll= selMap[col].querySelectorAll("div");
+		<!-- let selMap= document.querySelectorAll(".col"); -->
+		<!-- let mapAll= selMap[col].querySelectorAll("div"); -->
+		let mapAll= document.getElementById(row+","+col);
 		console.log("row,col",row,col);
-		return mapAll[row];
+		<!-- return mapAll[row]; -->
+		return mapAll;
 	}
 	
 	//FIXME:two mode
 	//moveMode
 	function moveMode(e){
 		let index,col,row,rangeArr;
-		index= e.getAttribute("value").split(",").map(Number);
+		index= e.getAttribute("id").split(",").map(Number);
 		let status=(e.getAttribute("class")=="red")?1:-1;
 		console.log("click:",index);
 		
-		rangeArr=polyRange(index);
+		rangeArr= polyRange(index);
 		for(let dir=0; dir<rangeArr.length; ++dir){
-			if(domMap(rangeArr[dir][0],rangeArr[dir][1])){
-				let mapBl= domMap(rangeArr[dir][0],rangeArr[dir][1]);
+			let mapBl= domMap(rangeArr[dir][0],rangeArr[dir][1]);
+			
+			if(mapBl.getAttribute("class")=="em"){
 				mapBl.setAttribute("class","copy");
 				mapBl.setAttribute("onclick","copyMode(this,"+status+")");
 			}
 		}
 	}
 	
-	//NEW:
 	//copyMode
 	function copyMode(e,status){
 		//copy by myself
 		if(status==1){
 			e.setAttribute("class","red");}
 		else{
-			e.setAttribute("class","wh")}
+			e.setAttribute("class","wh")
+		}
 		
 		//add click
 		e.setAttribute("onclick","moveMode(this)")
@@ -165,16 +169,16 @@
 	//FIXME:range not only 1 but 2;
 	//polyRange
 	function polyRange(index){
+		let rgArr;
+		let filterNa=[],result=[];
 		let [row, col]=index;
 		let colL= (mapSize>col)?-1:0;
 		let colR= (col>=mapSize-1)?-1:0;
-		let rgArr,filterNa,result;
-		filterNa=[],result=[];
+		
 		//polyRange six direction
 		rgArr=[
 			[row+colL,col-1],[row-1,col],[row+colR,col+1],
 			[row+colL+1,col-1],[row+1,col],[row+colR+1,col+1]];
-		console.log("rangeArr:",rgArr)
 		
 		//filter (big&equal 0)&& (less than mapLen)
 		let lenNum=rgArr.length;
@@ -194,13 +198,14 @@
 			}
 		}
 		
-		console.log("result:",result);
+		console.log("polyRange().result:",result);
 		
 		return result;
 	}
 	
 	//view
 	function drawMap(){
+		map.innerHTML="";
 		for(let col=0; col<mapLen; ++col){
 			map.innerHTML+=
 			`<div class="col">
@@ -212,8 +217,8 @@
 		for(let col=0; col<mapLen; ++col){
 			for(let row=0; row< mapArr[col].length; ++row){
 				mapCol[col].innerHTML+=
-				`<div class="${mapArr[col][row]}" 
-					value="${row},${col}">
+				`<div class="${mapArr[col][row]}"
+					id="${row},${col}">
 					${row},${col}<br/>
 					${mapArr[col][row]}
 				</div>`;
