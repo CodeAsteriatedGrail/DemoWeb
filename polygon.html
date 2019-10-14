@@ -36,12 +36,14 @@
 		<!-- style end -->
 	</head>
 	<body>
-		<div id="turn">回合指示物</div>
+		<div id="turn">回合指示物
+			<div id="roundTurn" class="red"></div>
+		</div>
 		<div id="map">地圖</div>
 		<div id="tool">工具列</div>
 		<div id="goldFinger">
 			<label>mapSize:
-				<input id="newSize"/>
+				<input id="mapSize"/>
 				<button onclick="newGame()">ok</button>
 			</label>
 		</div>
@@ -49,16 +51,19 @@
 		<script>
 	<!-- index -->
 	const map= document.getElementById("map");
-	let mapS= document.getElementById("newSize");
+	
 	let mapSize, mapLen;
 	let mapData, mapArr;
 	
 	mapSize= 5;
 	main();
 	
+	//FIXED
 	//newGame
 	function newGame(){
-		mapSize= mapS.value;
+		<!-- let mapS= document.getElementById("mapSize"); -->
+		<!-- mapSize= mapS.value; -->
+		mapSize= document.getElementById("mapSize").value;
 		main();
 	}
 	
@@ -122,21 +127,21 @@
 		}
 	}
 	
-	//FIXED:id replace value
 	//domMap
 	function domMap(row,col){
 		let mapAll= document.getElementById(row+","+col);
 		console.log("row,col=",row,col,);
-		
 		return mapAll;
 	}
 	
 	//FIXME:two mode
+	//FIXED:remove varible col,row
 	//moveMode
 	function moveMode(e){
-		let index,col,row,rangeArr;
+		let index,rangeArr;
+		<!-- let status=(e.getAttribute("class")=="red")?1:-1; -->
+		let status=!!(e.getAttribute("class")=="red");
 		index= e.getAttribute("id").split(",").map(Number);
-		let status=(e.getAttribute("class")=="red")?1:-1;
 		console.log("click:",index);
 		
 		rangeArr= polyRange(index);
@@ -150,28 +155,33 @@
 		}
 	}
 	
+	//FIXED: ()?y:n; replace If...else...
 	//copyMode
 	function copyMode(e,status){
-		//copy by myself
-		if(status==1){
-			e.setAttribute("class","red");}
-		else{
-			e.setAttribute("class","wh")
-		}
-		
 		//add click
 		e.setAttribute("onclick","moveMode(this)")
+	
+		//copy by myself
+		status=(status==1)?"red":"wh";
+		e.setAttribute("class",status);
+		
+		<!-- if(status==1){ -->
+			<!-- e.setAttribute("class","red");} -->
+		<!-- else{ -->
+			<!-- e.setAttribute("class","wh") -->
+		<!-- } -->
+		
+		
 	}
 	
-	//TODAY:some from to domMap()
 	//FIXME:range not only 1 but 2;
 	//polyRange
 	function polyRange(index){
 		let rgArr;
-		let filterNa=[],result=[];
+		let result=[];
 		let [row, col]=index;
 		let colL= (mapSize>col)?-1:0;
-		let colR= (col>=mapSize-1)?-1:0;
+		let colR= (col>=(mapSize-1))?-1:0;
 		
 		//polyRange six direction
 		rgArr=[
@@ -190,14 +200,17 @@
 		return result;
 	}
 	
+	//FIXME
 	class PolyStatus{
 		constructor(){
 		}
 		
 	}
+	
 	//view
 	function drawMap(){
 		map.innerHTML="";
+		
 		for(let col=0; col<mapLen; ++col){
 			map.innerHTML+=
 			`<div class="col">
