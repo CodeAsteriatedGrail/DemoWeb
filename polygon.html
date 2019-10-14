@@ -58,11 +58,8 @@
 	mapSize= 5;
 	main();
 	
-	//FIXED
 	//newGame
 	function newGame(){
-		<!-- let mapS= document.getElementById("mapSize"); -->
-		<!-- mapSize= mapS.value; -->
 		mapSize= document.getElementById("mapSize").value;
 		main();
 	}
@@ -135,7 +132,6 @@
 	}
 	
 	//FIXME:two mode
-	//FIXED:remove varible col,row
 	//moveMode
 	function moveMode(e){
 		let index,rangeArr;
@@ -155,7 +151,7 @@
 		}
 	}
 	
-	//FIXED: ()?y:n; replace If...else...
+	//FIXME: can't change other
 	//copyMode
 	function copyMode(e,status){
 		//add click
@@ -165,13 +161,12 @@
 		status=(status==1)?"red":"wh";
 		e.setAttribute("class",status);
 		
-		<!-- if(status==1){ -->
-			<!-- e.setAttribute("class","red");} -->
-		<!-- else{ -->
-			<!-- e.setAttribute("class","wh") -->
-		<!-- } -->
-		
-		
+		//
+		let copyModeArr= document.querySelectorAll(".copy");
+		for(let block of copyModeArr){
+			block.setAttribute("class","em");
+			block.setAttribute("onclick","");
+		}
 	}
 	
 	//FIXME:range not only 1 but 2;
