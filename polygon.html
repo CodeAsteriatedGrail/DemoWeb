@@ -40,6 +40,7 @@
 			<div id="roundTurn" class="red"></div>
 		</div>
 		<div id="map">地圖</div>
+		<div id="testMap">地圖</div>
 		<div id="tool">工具列</div>
 		<div id="goldFinger">
 			<label>mapSize:
@@ -83,8 +84,6 @@
 	
 	//initMap
 	function initMap(){
-		
-		
 		//create bigest row
 		let copyArr=[];
 		for(let row= 0; row< mapLen; ++row){
@@ -195,12 +194,23 @@
 		return result;
 	}
 	
-	//FIXME
+	/*FIXME:classes replace more function
+	/*ref:JavaScript Classes in Practice #1 - Creating a HTML Binding
+	/*from https://www.youtube.com/watch?v=rVkSgbKgkRI&list=PLVvjrrRCBy2I2eE1e1yOuhts2oTvWesMy&index=6
+	*/
 	class PolyStatus{
-		constructor(){
+		constructor(element){
+			this.element= element;
 		}
-		
+		classHo(){
+			console.log("y");
+			this.element.setAttribute("class","ho");
+		}
 	}
+	let domRoundTurn= document.getElementById("roundTurn");
+	let testPoly= new PolyStatus(domRoundTurn);
+	console.log(testPoly);
+	testPoly.classHo();
 	
 	//view
 	function drawMap(){
